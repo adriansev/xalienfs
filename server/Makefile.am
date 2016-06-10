@@ -9,7 +9,7 @@
 
 SUBDIRS = C2Perl .
 
-CPPFLAGS = -I$(top_srcdir)/base -I$(XROOTD_LOCATION)/include/xrootd -I$(XROOTD_LOCATION)/src/ -I$(ALIEN_LOCATION) -O -pg -g
+AM_CPPFLAGS = -I$(top_srcdir)/base -I$(XROOTD_LOCATION)/include/xrootd -I$(XROOTD_LOCATION)/src/ -I$(ALIEN_LOCATION) -O -pg -g
 
 bin_PROGRAMS = xAlienWorker
 

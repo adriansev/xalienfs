@@ -10,25 +10,18 @@ libgapiUI_la_LIBADD = libgclient.la $(top_srcdir)/base/CODEC/libUI-CODEC.la \
 	$(OPENSSLLIB) $(LIBSSL_LIBCRYPTO) $(SHELL_LIBS) -lpthread
 libgapiUI_la_LDFLAGS = -shrext ".so" -DWITH_OPENSSL -version-info 4:0:0
 
-
 if ENABLE_PERLMODULE
-CPPFLAGS = -I$(top_srcdir)/base -I$(top_srcdir)/server \
-           -I$(top_srcdir)/base/cwccrypt $(GAPIINC) \
-           -I$(SWIG_INC)/ -I$(SWIG_INC)/perl5/ \
-	   $(GLOBUS_INCLUDE) $(OPENSSLINC) -I$(XROOTD_LOCATION)/include/xrootd/ -I$(XROOTD_LOCATION)/src/ -D_REENTRANT
-else
-CPPFLAGS = -I$(top_srcdir)/base -I$(top_srcdir)/server \
-           -I$(top_srcdir)/base/cwccrypt $(GAPIINC) \
-	   $(GLOBUS_INCLUDE) $(OPENSSLINC) -I$(XROOTD_LOCATION)/include/xrootd/ -I$(XROOTD_LOCATION)/src/ -D_REENTRANT 
+         ADD_SWIG = -I$(SWIG_INC)/ -I$(SWIG_INC)/perl5/
 endif
 
-libgclient_la_SOURCES = gclient.cxx gclient.h \
-			gapi_dir_operations.h gapi_dir_operations.cxx \
-			gapi_stat.h gapi_stat.cxx \
-	                gapi_file_operations.h gapi_file_operations.cxx \
+AM_CPPFLAGS = -I$(top_srcdir)/base -I$(top_srcdir)/server -I$(top_srcdir)/base/cwccrypt $(GAPIINC) $(ADD_SWIG) \
+             $(GLOBUS_INCLUDE) $(OPENSSLINC) -I$(XROOTD_LOCATION)/include/xrootd/ -I$(XROOTD_LOCATION)/src/ -D_REENTRANT
+
+
+libgclient_la_SOURCES = gclient.cxx gclient.h gapi_dir_operations.h gapi_dir_operations.cxx \
+			gapi_stat.h gapi_stat.cxx gapi_file_operations.h gapi_file_operations.cxx \
 			gapi_job_operations.h gapi_job_operations.cxx \
 			posix_helpers.h posix_helpers.cxx
-
 
 libgclient_la_LIBADD = $(SHELL_LIBS) -L$(XROOTD_LOCATION)/lib$(MARK64) -lXrdSec -lXrdClient -lXrdUtils $(OPENSSLLIB) $(LIBSSL_LIBCRYPTO) -ldl
 

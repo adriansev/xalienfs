@@ -15,5 +15,5 @@ LDADD=$(PERL_LIBS)
 LDFLAGS=$(PERL_LDOPTS)
 
 ## INCLUDES can be used to pass other cpp options apart from -I
-INCLUDES= $(PERL_CCOPTS)
+AM_CPPFLAGS = $(PERL_CCOPTS)
 
