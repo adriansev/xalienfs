@@ -1,0 +1,26 @@
+rm -rf \
+Makefile.in  \
+        aclocal.m4 \
+        autom4te.cache/ \
+        base/CODEC/Makefile.in \
+        base/Makefile.in \
+        base/ShmAuth/Makefile.in \
+        base/cwccrypt/Makefile.in \
+        base/cwccrypt/gaes/Makefile.in \
+        client/Makefile.in \
+        client/clients/Makefile.in \
+        client/gclientlib/Makefile.in \
+        compile \
+        config.guess \
+        config.h.in \
+        config.sub \
+        configure \
+        depcomp \
+        install-sh \
+        ltmain.sh \
+        m4/ \
+        missing \
+        server/C2Perl/Makefile.in \
+        server/Makefile.in
+
+
