@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include <limits.h>
+#include <string.h>
 
 #if defined(UINT_MAX) && UINT_MAX == 4294967295
   typedef   unsigned int  uint32;
