@@ -1,5 +1,3 @@
-AC_CONFIG_MACRO_DIR([m4])
-
 ## Thiss is the input file for automake, which will generate Makefile.in ##########
 ## not a GNU package. You can remove this line, if
 ## you have all needed files, that a GNU package needs
