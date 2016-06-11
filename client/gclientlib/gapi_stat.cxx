@@ -75,14 +75,14 @@ static int doStat(const std::string &cmd)
     memset(st, 0, sizeof(GAPI_STAT));
     // Read tag values
     std::string line, perms, user, group, date, name, path, fullpath;
-    unsigned long long blocks, size, ctime;
+    unsigned long long size = 0, ctime = 0; // blocks = 0; // not used
 
     group=tags["group"];
     perms=tags["permissions"];
     user=tags["user"];
     name=tags["name"];
     size=atoll(tags["size"].c_str());
-    blocks=size/1024;
+//    blocks=size/1024; //not used
     struct tm ts;
     std::string extdate = "2006 ";
     extdate += tags["date"];
