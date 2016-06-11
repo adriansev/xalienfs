@@ -164,12 +164,16 @@ bool block_cmp(const byte l[], const byte r[], const word len)
 }
 
 word rand32(void)
-{   static word   r4,r_cnt = (word)-1, w = 521288629, z = 362436069;
+{   static word r4;
+    static word r_cnt = (word)-1;
+    static word  w = 521288629;
+    static word  z = 362436069;
 
     z = 36969 * (z & 65535) + (z >> 16);
     w = 18000 * (w & 65535) + (w >> 16);
 
-    r_cnt = 0; r4 = (z << 16) + w; return r4;
+    r_cnt = 0;
+    r4 = (z << 16) + w; return r4;
 }
 
 byte rand8(void)
