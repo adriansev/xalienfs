@@ -23,7 +23,7 @@ libgclient_la_SOURCES = gclient.cxx gclient.h gapi_dir_operations.h gapi_dir_ope
 			gapi_job_operations.h gapi_job_operations.cxx \
 			posix_helpers.h posix_helpers.cxx
 
-libgclient_la_LIBADD = $(SHELL_LIBS) -L$(XROOTD_LOCATION)/lib$(MARK64) -lXrdSec -lXrdClient -lXrdUtils $(OPENSSLLIB) $(LIBSSL_LIBCRYPTO) -ldl
+libgclient_la_LIBADD = $(SHELL_LIBS) -L$(XROOTD_LOCATION)/lib$(MARK64) -lXrdClient -lXrdUtils $(OPENSSLLIB) $(LIBSSL_LIBCRYPTO) -ldl
 
 if ENABLE_PERLMODULE
 
