@@ -28,16 +28,13 @@
 #  endif
 
 #  define DEBUGENVNAME "DEBUG_" DEBUG_TAG
-#  define DEBUGMSG(X,MSG) if(getenv(DEBUGENVNAME)!=NULL) \
-                       if(atoi(getenv(DEBUGENVNAME)) >= X ) {\
-                         if(getenv("DEBUGFILE")!=NULL) {\
+#  define DEBUGMSG(X,MSG) if(getenv(DEBUGENVNAME)!=NULL) { if(atoi(getenv(DEBUGENVNAME)) >= X ) { if(getenv("DEBUGFILE")!=NULL) { \
                            std::ofstream dbgstr(getenv("DEBUGFILE"),std::ios::app);\
-                           dbgstr << "(" << DEBUGENVNAME <<"=" << X << "," << __FUNCTION__ << "): " MSG;} }\
-                         else { std::cout << "(" << DEBUGENVNAME <<"=" << X << "," << __FUNCTION__ << "): " MSG;}
+                           dbgstr << "(" << DEBUGENVNAME <<"=" << X << "," << __FUNCTION__ << "): " MSG;} } }\
+                         else \
+                           { std::cout << "(" << DEBUGENVNAME <<"=" << X << "," << __FUNCTION__ << "): " MSG;}
 
-#  define DEBUGHEXDUMP(X,MSG,PTR,LENGTH) if(getenv(DEBUGENVNAME)!=NULL) \
-                       if(atoi(getenv(DEBUGENVNAME)) >= X ) {\
-                         if(getenv("DEBUGFILE")!=NULL) { \
+#  define DEBUGHEXDUMP(X,MSG,PTR,LENGTH) if(getenv(DEBUGENVNAME)!=NULL) { if(atoi(getenv(DEBUGENVNAME)) >= X ) { if(getenv("DEBUGFILE")!=NULL) { \
                            std::ofstream dbgstr(getenv("DEBUGFILE"),std::ios::app);\
                            dbgstr << "(" << DEBUGENVNAME <<"=" << X << "," << __FUNCTION__ << "): " MSG;\
                            dbgstr.setf(std::ios::hex); \
@@ -45,8 +42,8 @@
                            for(unsigned char *debgi=(unsigned char*)PTR; debgi<((unsigned char*) PTR+(LENGTH));debgi++){ \
                               if(++counter%12==1) { dbgstr << "\n"; dbgstr << std::setw(4) << "  " << (unsigned int) *debgi;} } \
                            dbgstr.unsetf(std::ios::hex);\
-                           dbgstr << "\n"; }\
-                         } else { \
+                           dbgstr << "\n"; } } }\
+                         else { \
                            std::cout << "(" << DEBUGENVNAME <<"=" << X << "," << __FUNCTION__ << "): " MSG;\
                            std::cout.setf(std::ios::hex); \
                            int counter=0; \
