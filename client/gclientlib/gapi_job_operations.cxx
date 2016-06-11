@@ -374,113 +374,152 @@ void gapi_printjobs(GAPI_JOBARRAY* gjobarray, std::string format , bool colour){
 GAPI_JOBSTATUS_STRING gapi_jobstatusstring(std::string status , bool colour){
   DEBUGMSG(3, << "gapi_jobstatusstring: status >" << status << "<" <<" colour > " << colour << " <" << std::endl);
   std::string retstring = status;
-  
-  if (status == "KILLED") 
+
+  if (status == "KILLED") {
     if (colour)
-      retstring = textred + "  K" + textnormal;
+      { retstring = textred + "  K" + textnormal; }
     else
-      retstring = "  K";
-  if (status == "RUNNING") 
+      { retstring = "  K"; }
+  }
+
+  if (status == "RUNNING") {
     if (colour)
-      retstring = textgreen + "  R" + textnormal;
-    else 
-      retstring = "  R";
-  if (status == "STARTED") 
-    if (colour)
-      retstring = textgreen + " ST" + textnormal;
+      { retstring = textgreen + "  R" + textnormal; }
     else
-      retstring = " ST";
-  if (status == "DONE") 
+      { retstring = "  R"; }
+  }
+
+  if (status == "STARTED") {
     if (colour)
-      retstring = textnormal + "  D" + textnormal;
+      { retstring = textgreen + " ST" + textnormal; }
     else
-      retstring = "  D";
-  if (status == "WAITING")
+      { retstring = " ST"; }
+  }
+
+  if (status == "DONE") {
     if (colour)
-      retstring = textblue + "  W" + textnormal;
+      { retstring = textnormal + "  D" + textnormal; }
     else
-      retstring = "  W";
-  if (status == "INSERTING")
+      { retstring = "  D"; }
+  }
+
+  if (status == "WAITING") {
     if (colour)
-      retstring = textyellow + "  I" + textnormal;
+      { retstring = textblue + "  W" + textnormal; }
     else
-      retstring = "  I";
-  if (status == "SPLIT") 
-    retstring = "  S";
-  if (status == "SPLITTING")
-    retstring = " SP";
-  if (status == "SAVING") 
-    if (colour) 
-      retstring = textgreen + " SV" + textnormal;
-    else 
-      retstring = " SV";
-  if (status == "SAVED")
-    retstring = "SVD";
-  if (status == "ERROR_A")
+      { retstring = "  W"; }
+  }
+
+  if (status == "INSERTING") {
     if (colour)
-      retstring = textrederror + " EQ" + textnormal;
+      { retstring = textyellow + "  I" + textnormal; }
     else
-      retstring = " EQ";
-  if (status == "ERROR_E")
+      { retstring = "  I"; }
+  }
+
+  if (status == "SPLIT") { retstring = "  S"; }
+
+  if (status == "SPLITTING") { retstring = " SP"; }
+
+  if (status == "SAVING") {
     if (colour)
-      retstring = textrederror + " EE" + textnormal;
-    else 
-      retstring = " EE";
-  if (status == "ERROR_I")
-    if (colour)
-      retstring = textrederror + " EI" + textnormal;
+      { retstring = textgreen + " SV" + textnormal; }
     else
-      retstring = " EI";
-  if (status == "ERROR_IB")
+      { retstring = " SV"; }
+  }
+
+  if (status == "SAVED") { retstring = "SVD"; }
+
+  if (status == "ERROR_A") {
     if (colour)
-      retstring = textrederror + "EIB" + textnormal;
+      { retstring = textrederror + " EQ" + textnormal; }
     else
-      retstring = "EIB";
-  if (status == "ERROR_R")
+      { retstring = " EQ"; }
+  }
+
+  if (status == "ERROR_E") {
     if (colour)
-      retstring = textrederror + " ER" + textnormal;
+      { retstring = textrederror + " EE" + textnormal; }
     else
-      retstring = " ER";
-  if (status == "ERROR_S")
+      { retstring = " EE"; }
+  }
+
+  if (status == "ERROR_I") {
     if (colour)
-      retstring = textrederror + " ES" + textnormal;
+      { retstring = textrederror + " EI" + textnormal; }
     else
-      retstring = " ES";
-  if (status == "ERROR_SV")
+      { retstring = " EI"; }
+  }
+
+  if (status == "ERROR_IB") {
     if (colour)
-      retstring = textrederror + "ESV" + textnormal;
+      { retstring = textrederror + "EIB" + textnormal; }
     else
-      retstring = "ESV";
-  if (status == "ERROR_V")
+      { retstring = "EIB"; }
+  }
+
+  if (status == "ERROR_R") {
     if (colour)
-      retstring = textrederror + " EV" + textnormal;
+      { retstring = textrederror + " ER" + textnormal; }
     else
-      retstring = " EV";
-  if (status == "ERROR_VN")
+      { retstring = " ER"; }
+  }
+
+  if (status == "ERROR_S") {
     if (colour)
-      retstring = textrederror + "EVN" + textnormal;
+      { retstring = textrederror + " ES" + textnormal; }
     else
-      retstring = "EVN";
-  if (status == "ERROR_VT")
+      { retstring = " ES"; }
+  }
+
+  if (status == "ERROR_SV") {
     if (colour)
-      retstring = textrederror + "EVT" + textnormal;
+      { retstring = textrederror + "ESV" + textnormal; }
     else
-      retstring = "EVT";
-  if (status == "ERROR_SPLT")
+      { retstring = "ESV"; }
+  }
+
+  if (status == "ERROR_V") {
     if (colour)
-      retstring = textrederror + "ESP" + textnormal;
+      { retstring = textrederror + " EV" + textnormal; }
     else
-      retstring = "ESP";
-  if (status == "FAILED")
+      { retstring = " EV"; }
+  }
+
+  if (status == "ERROR_VN") {
     if (colour)
-      retstring = textrederror + " FF" + textnormal;
+      { retstring = textrederror + "EVN" + textnormal; }
     else
-      retstring = " FF";
-  if (status == "ZOMBIE")
+      { retstring = "EVN"; }
+  }
+
+  if (status == "ERROR_VT") {
     if (colour)
-      retstring = textblueerror + "  Z" + textnormal;
+      { retstring = textrederror + "EVT" + textnormal; }
     else
-      retstring = "  Z";
+      { retstring = "EVT"; }
+  }
+
+  if (status == "ERROR_SPLT") {
+    if (colour)
+      { retstring = textrederror + "ESP" + textnormal; }
+    else
+      { retstring = "ESP"; }
+  }
+
+  if (status == "FAILED") {
+    if (colour)
+      { retstring = textrederror + " FF" + textnormal; }
+    else
+      { retstring = " FF"; }
+  }
+
+  if (status == "ZOMBIE") {
+    if (colour)
+      { retstring = textblueerror + "  Z" + textnormal; }
+    else
+      { retstring = "  Z"; }
+  }
 
 return retstring;
 }
