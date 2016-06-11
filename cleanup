@@ -15,5 +15,10 @@ base/cwccrypt/spc_cypherq.o base/cwccrypt/spc_helpers.lo base/cwccrypt/spc_helpe
 client/gclientlib/.libs/ client/gclientlib/gapiUI.lo client/gclientlib/gapiUI.o client/gclientlib/gapi_dir_operations.lo client/gclientlib/gapi_dir_operations.o \
 client/gclientlib/gapi_file_operations.lo client/gclientlib/gapi_file_operations.o client/gclientlib/gapi_job_operations.lo client/gclientlib/gapi_job_operations.o \
 client/gclientlib/gapi_stat.lo client/gclientlib/gapi_stat.o client/gclientlib/gclient.lo client/gclientlib/gclient.o client/gclientlib/libgclient.la \
-client/gclientlib/posix_helpers.lo client/gclientlib/posix_helpers.o
+client/gclientlib/posix_helpers.lo client/gclientlib/posix_helpers.o client/clients/.libs/ client/clients/gbbox client/clients/gbbox.o client/clients/gcmd \
+client/clients/gcmd.o client/clients/gcp client/clients/gcp.o client/clients/gisonline client/clients/gisonline.o client/clients/gprepare client/clients/gprepare.o \
+client/clients/gps client/clients/gps.o client/clients/gshell client/clients/gshell.o client/clients/gstage client/clients/gstage.o client/clients/gsubmit \
+client/clients/gsubmit.o client/gclientlib/libgapiUI.la client/gclientlib/perl/MYMETA.json client/gclientlib/perl/MYMETA.yml client/gclientlib/perl/Makefile \
+client/gclientlib/perl/blib/ client/gclientlib/perl/gapiUI_wrap.cxx client/gclientlib/perl/gapiUI_wrap.o client/gclientlib/perl/pm_to_blib \
+server/C2Perl/.libs/ server/C2Perl/C2PERL.lo server/C2Perl/C2PERL.o server/C2Perl/libUI-C2PERL.la
 
