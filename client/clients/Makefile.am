@@ -148,25 +148,23 @@ install-exec-local:
 	$(INSTALL) -m 755 $(srcdir)/scripts/env_gbbox.sh $(DESTDIR)/$(prefix)/etc/;
 	pwd;
 
-tmpdir="/tmp/igtf4alien.$$"
-mkdir -p ${tmpdir}
-cd ${tmpdir}
-igtf_location="https://dist.eugridpma.info/distribution/igtf/current/"
-igtf_file="igtf-policy-installation-bundle-1.74.tar.gz"
+#tmpdir="/tmp/igtf4alien.$$"
+#mkdir -p ${tmpdir}
+#cd ${tmpdir}
+#igtf_location="https://dist.eugridpma.info/distribution/igtf/current/"
+#igtf_file="igtf-policy-installation-bundle-1.74.tar.gz"
 
-curl -fsSLkO ${igtf_location}/${igtf_file} && tar -xvf ${igtf_file}
+#curl -fsSLkO ${igtf_location}/${igtf_file} && tar -xvf ${igtf_file}
 
-cdir=$PWD
-mkdir -p ${cdir}/igtf-install/
-igtfdir=`find $PWD -type d -name 'igtf-policy-installation*'`
+#cdir=$PWD
+#mkdir -p ${cdir}/igtf-install/
+#igtfdir=`find $PWD -type d -name 'igtf-policy-installation*'`
 
-cd $igtfdir
-./configure --prefix=${cdir}/igtf-install/
-make install-all-accredited
+#cd $igtfdir
+#./configure --prefix=${cdir}/igtf-install/
+#make install-all-accredited
 
-cp -Rv ${cdir}/igtf-install/ $(DESTDIR)/$(prefix)/share/certificates/
-
-
+#cp -Rv ${cdir}/igtf-install/ $(DESTDIR)/$(prefix)/share/certificates/
 
 bundle-lib-local:
 	thisdir=$$PWD; mkdir lib; cp `ldd $$thisdir/../gclientlib/.libs/libgapiUI.so | grep -v "=> /lib" | awk '{print $$3}' ` lib; tar cvzf gshell-lib.tgz lib;rm -rf lib;
