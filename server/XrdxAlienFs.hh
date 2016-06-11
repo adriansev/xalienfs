@@ -69,8 +69,9 @@ public:
   int         close() {return 0;}
   
   const   char       *FName() {return (const char *)fname;}
-  
-  XrdxAlienFsDirectory(char *user=0) : XrdOfsDirectory(user)
+
+  // int MonID @ XrdSfs/XrdSfsInterface.hh
+  XrdxAlienFsDirectory(char *user=0, int MonID=0 ) : XrdOfsDirectory(user, MonID)
   {ateof = 0; fname = 0;
   dh    = (DIR *)0;
   d_pnt = &dirent_full.d_entry;
@@ -149,7 +150,7 @@ public:
 
   gapi_envhash_t* getEnvHash(char* decodedstr);
   
-  XrdxAlienFsFile(char *user=0) : XrdOfsFile(user)
+  XrdxAlienFsFile(char *user=0, int MonID = 0) : XrdOfsFile(user, MonID)
   {fname = "";executed=false;}
   ~XrdxAlienFsFile() { close();}
 private:
@@ -202,11 +203,11 @@ public:
 
   // Object Allocation Functions
   //
-  XrdSfsDirectory *newDir(char *user=0)
-  {return (XrdSfsDirectory *)new XrdxAlienFsDirectory(user);}
+  XrdSfsDirectory *newDir(char *user=0, int MonID = 0)
+  {return (XrdSfsDirectory *)new XrdxAlienFsDirectory(user, MonID);}
   
-  XrdSfsFile      *newFile(char *user=0)
-  {return      (XrdSfsFile *)new XrdxAlienFsFile(user);}
+  XrdSfsFile      *newFile(char *user=0, int MonID=0)
+  {return      (XrdSfsFile *)new XrdxAlienFsFile(user, MonID);}
   
   // Other Functions
   //
