@@ -1,3 +1,4 @@
+#!/bin/bash
 rm -rf \
 Makefile Makefile.in aclocal.m4 autom4te.cache/ \
 base/CODEC/.deps/ base/CODEC/Makefile base/CODEC/Makefile.in base/Makefile base/Makefile.in base/ShmAuth/.deps/ base/ShmAuth/Makefile base/ShmAuth/Makefile.in \
@@ -5,6 +6,14 @@ base/cwccrypt/.deps/ base/cwccrypt/Makefile base/cwccrypt/Makefile.in base/cwccr
 client/Makefile client/Makefile.in client/clients/.deps/ client/clients/Makefile client/clients/Makefile.in client/gclientlib/.deps/ \
 client/gclientlib/Makefile client/gclientlib/Makefile.in \
 compile config.guess config.h config.h.in config.log config.status config.sub configure depcomp install-sh libtool ltmain.sh m4/ missing \
-server/.deps/ server/C2Perl/.deps/ server/C2Perl/Makefile server/C2Perl/Makefile.in server/Makefile server/Makefile.in server/XrdxAlienFs stamp-h1
-
+server/.deps/ server/C2Perl/.deps/ server/C2Perl/Makefile server/C2Perl/Makefile.in server/Makefile server/Makefile.in server/XrdxAlienFs stamp-h1 \
+base/CODEC/.libs/ base/CODEC/CODEC.lo base/CODEC/CODEC.o base/CODEC/libUI-CODEC.la base/ShmAuth/.libs/ base/ShmAuth/ShmAuth.lo base/ShmAuth/ShmAuth.o base/ShmAuth/libUI-ShmAuth.la \
+base/cwccrypt/.libs/ base/cwccrypt/gaes/.libs/ base/cwccrypt/gaes/aesaux.o base/cwccrypt/gaes/aescrypt.lo base/cwccrypt/gaes/aescrypt.o base/cwccrypt/gaes/aesgav.o \
+base/cwccrypt/gaes/aeskey.lo base/cwccrypt/gaes/aeskey.o base/cwccrypt/gaes/aestab.lo base/cwccrypt/gaes/aestab.o base/cwccrypt/gaes/gavtest base/cwccrypt/gaes/libgladmanaes.la \
+base/cwccrypt/libcwccrypt.la base/cwccrypt/spc_b64.lo base/cwccrypt/spc_b64.o base/cwccrypt/spc_cwc.lo base/cwccrypt/spc_cwc.o base/cwccrypt/spc_cypherq.lo \
+base/cwccrypt/spc_cypherq.o base/cwccrypt/spc_helpers.lo base/cwccrypt/spc_helpers.o \
+client/gclientlib/.libs/ client/gclientlib/gapiUI.lo client/gclientlib/gapiUI.o client/gclientlib/gapi_dir_operations.lo client/gclientlib/gapi_dir_operations.o \
+client/gclientlib/gapi_file_operations.lo client/gclientlib/gapi_file_operations.o client/gclientlib/gapi_job_operations.lo client/gclientlib/gapi_job_operations.o \
+client/gclientlib/gapi_stat.lo client/gclientlib/gapi_stat.o client/gclientlib/gclient.lo client/gclientlib/gclient.o client/gclientlib/libgclient.la \
+client/gclientlib/posix_helpers.lo client/gclientlib/posix_helpers.o
 
