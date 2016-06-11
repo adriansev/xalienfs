@@ -4,7 +4,8 @@ AC_CONFIG_SRCDIR([server/XrdxAlienFs.cc])
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([1.6.3 subdir-objects])
-AC_CONFIG_MACRO_DIRS([m4])
+
+AC_CONFIG_MACRO_DIR([m4])
 
 #CXXFLAGS="-Wall -Werror -Wno-deprecated -g $CXXFLAGS"
 CXXFLAGS="-Wall -Wno-deprecated -g $CXXFLAGS"
