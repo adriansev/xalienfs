@@ -20,5 +20,5 @@ client/clients/gcmd.o client/clients/gcp client/clients/gcp.o client/clients/gis
 client/clients/gps client/clients/gps.o client/clients/gshell client/clients/gshell.o client/clients/gstage client/clients/gstage.o client/clients/gsubmit \
 client/clients/gsubmit.o client/gclientlib/libgapiUI.la client/gclientlib/perl/MYMETA.json client/gclientlib/perl/MYMETA.yml client/gclientlib/perl/Makefile \
 client/gclientlib/perl/blib/ client/gclientlib/perl/gapiUI_wrap.cxx client/gclientlib/perl/gapiUI_wrap.o client/gclientlib/perl/pm_to_blib \
-server/C2Perl/.libs/ server/C2Perl/C2PERL.lo server/C2Perl/C2PERL.o server/C2Perl/libUI-C2PERL.la
-
+server/C2Perl/.libs/ server/C2Perl/C2PERL.lo server/C2Perl/C2PERL.o server/C2Perl/libUI-C2PERL.la \
+client/gclientlib/perl/gapiUI.pm
