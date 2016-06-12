@@ -158,10 +158,12 @@ AC_SUBST(PERL)
 # get the correct library options and link flags for perl
 AC_MSG_CHECKING([perl libraries and link options])
 perlbuf=`${PERL} -MExtUtils::Embed -e ldopts`
+
 if test x"$perlbuf" = x
 then
   AC_MSG_ERROR([no result from ${PERL} -MExtUtils::Embed -e ldopts])
 fi
+
 AC_MSG_RESULT($perlbuf)
 for name in $perlbuf
 do
@@ -180,6 +182,7 @@ do
       ;;
   esac
 done
+
 AC_MSG_NOTICE([perlembed libraries to link: $PERL_LIBS])
 AC_MSG_NOTICE([perlembed link flags: $PERL_LDOPTS])
 PERL_CCOPTS=`${PERL} -MExtUtils::Embed -e ccopts`
