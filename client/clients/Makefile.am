@@ -138,7 +138,7 @@ install-exec-local:
 	for name in $(GSCRIPTBIN); do $(INSTALL) -m 755 $(srcdir)/scripts/$(GPREFIX)$$name $(DESTDIR)/$(bindir) ; done
 	for name in $(GSCRIPTETC); do $(INSTALL) -m 644 $(srcdir)/scripts/$(GPREFIX)$$name $(DESTDIR)/$(prefix)/etc/ ; done
 	$(INSTALL) -m 644 gapi-gcc-version $(DESTDIR)/$(bindir)/../etc/
-	cd $(DESTDIR)/$(bindir); ln -f -s gbbox g$(GPREFIX)   
+	cd $(DESTDIR)/$(bindir); ln -f -s gbbox g$(GPREFIX)
 	cd $(DESTDIR)/$(bindir); ln -f -s gps $(GPREFIX)_ps
 	cd $(DESTDIR)/$(bindir); ln -f -s gisonline $(GPREFIX)_isonline
 	cd $(DESTDIR)/$(bindir); ln -f -s gprepare $(GPREFIX)_prepare
