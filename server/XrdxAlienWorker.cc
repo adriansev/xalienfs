@@ -126,14 +126,14 @@ int makeWorker(const char* module, const char* pipedir, int n) {
 	fprintf(stderr,"error: read from communication pipe impossible - input string too long!\n");
 	continue;
       }
-			      
+
       if ( (read(socket->SockNum(), inputbuffer,iblen)) != iblen) {
 	fprintf(stderr,"error: read from communication pipe failed - couldn't receive inputbuffer - terminating!\n");
 	exit(-1);
       }
       fprintf(stdout,"Info: received inputstream %s\n",inputbuffer);
 
-      char* outbyteresult = "";
+      const char* outbyteresult = "";
 
       sig_fd = outsocket->SockNum();
       set_sigalarm();
@@ -159,7 +159,8 @@ int makeWorker(const char* module, const char* pipedir, int n) {
       }
       alarm(0);
 
-      if ((outbyteresult= (char *) C2PERLFetchResult(res))==NULL) {
+      outbyteresult = C2PERLFetchResult(res);
+      if ( outbyteresult == NULL ) {
 	fprintf(stderr,"error: fetch result failed\n");
 	int message = 0;
 	// send a 0 to indicate that there is no result!
