@@ -21,4 +21,6 @@ client/clients/gps client/clients/gps.o client/clients/gshell client/clients/gsh
 client/clients/gsubmit.o client/gclientlib/libgapiUI.la client/gclientlib/perl/MYMETA.json client/gclientlib/perl/MYMETA.yml client/gclientlib/perl/Makefile \
 client/gclientlib/perl/blib/ client/gclientlib/perl/gapiUI_wrap.cxx client/gclientlib/perl/gapiUI_wrap.o client/gclientlib/perl/pm_to_blib \
 server/C2Perl/.libs/ server/C2Perl/C2PERL.lo server/C2Perl/C2PERL.o server/C2Perl/libUI-C2PERL.la \
+server/.libs/ server/XrdxAlienConfig.lo server/XrdxAlienConfig.o server/XrdxAlienFs.lo server/XrdxAlienFs.o server/XrdxAlienWorker.o server/libXrdxAlienFs.la \
+server/xAlienWorker \
 client/gclientlib/perl/gapiUI.pm
