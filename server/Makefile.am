@@ -9,19 +9,19 @@
 
 SUBDIRS = C2Perl .
 
-AM_CPPFLAGS = -I$(top_srcdir)/base -I$(XROOTD_LOCATION)/include/xrootd -I$(XROOTD_LOCATION)/include/xrootd/private -I$(ALIEN_LOCATION) -O -pg -g
+AM_CPPFLAGS = -I$(top_srcdir)/base -I$(XROOTD_LOCATION)/include/xrootd -I$(XROOTD_LOCATION)/include/xrootd/private -I$(ALIEN_LOCATION) $(CXXFLAGS)
 
 bin_PROGRAMS = xAlienWorker
 
 xAlienWorker_SOURCES = XrdxAlienWorker.cc
 
-xAlienWorker_LDADD = C2Perl/libUI-C2PERL.la $(PERL_LIBS) -L$(XROOTD_LOCATION)/lib$(MARK64) -lXrdUtils
+xAlienWorker_LDADD = C2Perl/libUI-C2PERL.la $(PERL_LIBS) -L$(XROOTD_LOCATION)/lib$(MARK64) -lXrdUtils -lXrdServer
 xAlienWorker_LDFLAGS = -static -export-dynamic $(PERL_LDOPTS)
 
 lib_LTLIBRARIES = libXrdxAlienFs.la
 
 libXrdxAlienFs_la_SOURCES = XrdxAlienFs.cc XrdxAlienFs.hh XrdxAlienTiming.hh XrdxAlienConfig.cc XrdxAlienTrace.hh
-libXrdxAlienFs_la_LIBADD = $(top_srcdir)/base/cwccrypt/libcwccrypt.la $(top_srcdir)/base/ShmAuth/libUI-ShmAuth.la $(top_srcdir)/base/CODEC/libUI-CODEC.la -L$(XROOTD_LOCATION)/lib$(MARK64)/  -lXrdUtils -lXrdOfs -lcrypto -luuid -L$(ALIEN_LOCATION)/lib$(MARK64)/
+libXrdxAlienFs_la_LIBADD = $(top_srcdir)/base/cwccrypt/libcwccrypt.la $(top_srcdir)/base/ShmAuth/libUI-ShmAuth.la $(top_srcdir)/base/CODEC/libUI-CODEC.la -L$(XROOTD_LOCATION)/lib$(MARK64)/  -lXrdUtils -lXrdServer -lcrypto -luuid -L$(ALIEN_LOCATION)/lib$(MARK64)/
 libXrdxAlienFs_la_LDFLAGS =
 
 install-exec-local:
