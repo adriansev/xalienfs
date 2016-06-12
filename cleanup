@@ -23,4 +23,5 @@ client/gclientlib/perl/blib/ client/gclientlib/perl/gapiUI_wrap.cxx client/gclie
 server/C2Perl/.libs/ server/C2Perl/C2PERL.lo server/C2Perl/C2PERL.o server/C2Perl/libUI-C2PERL.la \
 server/.libs/ server/XrdxAlienConfig.lo server/XrdxAlienConfig.o server/XrdxAlienFs.lo server/XrdxAlienFs.o server/XrdxAlienWorker.o server/libXrdxAlienFs.la \
 server/xAlienWorker \
+client/clients/gapi-gcc-version client/clients/scripts/alien-token-destroy client/clients/scripts/alien-token-info client/clients/scripts/alien-token-init \
 client/gclientlib/perl/gapiUI.pm
