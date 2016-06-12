@@ -1,0 +1,9 @@
+#!/bin/bash
+
+BUILD_DIR="../00xalienfs-build"
+
+./cleanup
+./bootstrap.sh
+mkdir -p ${BUILD_DIR}
+[[ -d ${BUILD_DIR} ]] && rm -rf ${BUILD_DIR}/*
+./configure --prefix=${BUILD_DIR} --enable-perl-module --enable-build-server &> >( tee config_out.txt )
