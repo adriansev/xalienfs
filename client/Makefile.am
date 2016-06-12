@@ -9,4 +9,4 @@
 
 SUBDIRS = gclientlib clients
 
-CPPFLAGS = -I$(top_srcdir)/base -I$(XROOTD_LOCATION)/include/xrootd -I$(ALIEN_LOCATION) -O -pg -g
+CPPFLAGS = -I$(top_srcdir)/base -I$(XROOTD_LOCATION)/include/xrootd -I$(ALIEN_LOCATION) $(OPTIM) $(DEBUG)
