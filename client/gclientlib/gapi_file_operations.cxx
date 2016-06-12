@@ -90,7 +90,7 @@ extern "C" {
 int gapi_open(const char *pathname, int flags, ...)
 {
   std::string url=pathname;
-  mode_t mode;
+  mode_t mode = 0;
   int fd = -1;
 
   // test
