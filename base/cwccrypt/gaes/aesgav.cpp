@@ -356,7 +356,7 @@ int sync(int nbr, ifstream& inf, char str[], bool outp)
 void comp_vecs(const char *fn1, const char *fn2)
 {   char       str1[128], str2[128];
     line_type  ty1, ty2;
-    int        no1, no2, err_cnt, np_cnt;
+    int        no1 = 0, no2 = 0, err_cnt = 0, np_cnt = 0;
     bool       req;
     ifstream   if1;
     ifstream   if2;
