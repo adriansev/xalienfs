@@ -1,6 +1,7 @@
 #!/bin/bash
 
-BUILD_DIR="../00xalienfs-build"
+CDIR=`pwd`
+BUILD_DIR="${CDIR}/../00xalienfs-build"
 
 ./cleanup
 ./bootstrap.sh
