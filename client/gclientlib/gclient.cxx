@@ -657,7 +657,7 @@ char *gclient::readline(const char *prompt) {
  */
 
 bool gclient::Command(const char *command) {
-  int maxtry = 1; 
+  int maxtry = 1;
   int ntry  = 0;
   bool success;
   int serverreselect=0;
@@ -665,7 +665,7 @@ bool gclient::Command(const char *command) {
   int retrysleep = 5;
   float dampingfactor= 1.2;
   time_t maxwait = 0;
-  static int lasttimeexecuted=0;
+  //  static int lasttimeexecuted=0; // not used
 
   // use environment settings
   if (getenv("GCLIENT_COMMAND_RETRY")) {
@@ -715,7 +715,7 @@ bool gclient::Command(const char *command) {
   //    }
   //  }
 
-  lasttimeexecuted = startwait;
+  // lasttimeexecuted = startwait; // not used
 
   try {
     success = InternalCommand(command);
@@ -1751,14 +1751,13 @@ void gclient::setResultEncryption(bool b) {
 }
 
 /**
-   sets the option indicating that the server commands should be 
-   run in debug mode
+   sets the option indicating that the server commands should be run in debug mode
 
    &param b      true for enable encryption
 */
 void gclient::setRemoteDebug(std::string b) {
   string filename=Tokenfilename();
-  int fd;
+  int fd = 0;
   if(fStoreToken) {
     if((fd=open(filename.c_str(),O_RDWR|O_CREAT,S_IWUSR|S_IRUSR))==-1) {
       cerr << "failed to open " << filename << "\n";
