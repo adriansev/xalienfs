@@ -103,31 +103,30 @@ AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h float.h limits.h netdb.h netinet/in.h stdlib.h string.h strings.h sys/socket.h sys/time.h sys/timeb.h unistd.h])
 
 # extend the preprocessor and link PATHs to the Vars provided by ACX_LIBOPTION
-CPPFLAGS="$READLINE_INCDIR $CPPFLAGS"
-LDFLAGS="$READLINE_LIBDIR $LDFLAGS"
 
-if test x"$activate_readline" = xyes -o x"$activate_readline" = xdefault_yes ; then
-   AC_CHECK_HEADERS([readline/readline.h readline/history.h curses.h term.h],
-                  [],[activate_readline="no"]
-                 )
-fi
+AC_ARG_WITH([readline],
+  [AS_HELP_STRING([--with-readline],
+  [support fancy command line editing @<:@default=check@:>@])],
+  [],
+  [with_readline=check])
 
-if test x"$activate_readline" = xyes -o x"$activate_readline" = xdefault_yes ; then
-   # Note: some systems like Mac offer all readline symbols within libreadline and
-   # have no additional libhisory installed on the system
-   AC_CHECK_LIB([history],[clear_history],
-               [HISTORY_LIB="-lhistory"]
-               ,,[-lcurses])
-   AC_CHECK_LIB([readline],[readline],
-               [AC_DEFINE(HAVE_READLINE,1,[use readline])
-               READLINE_LIBS="-lreadline $HISTORY_LIB -lcurses"]
-               ,[activate_readline="no"],[-lcurses])
-fi
+READLINE_LIBS=
+  AS_IF([test "x$with_readline" != xno],
+  [AC_CHECK_LIB([readline], [main],
+    [AC_SUBST([LIBREADLINE], ["-lreadline -lncurses"])
+      AC_DEFINE([HAVE_LIBREADLINE], [1],
+      [Define if you have libreadline])
+    ],
+  [if test "x$with_readline" != xcheck; then
+    AC_MSG_FAILURE(
+    [--with-readline was given, but test for readline failed])
+    fi
+  ], -lncurses)])
+
+
+#CPPFLAGS="$READLINE_INCDIR $CPPFLAGS"
+#LDFLAGS="$READLINE_LIBDIR $LDFLAGS"
 AC_SUBST(READLINE_LIBS)
-
-if test x"$activate_readline" != xyes -a  x"$activate_readline" != xdefault_yes ; then
-   AC_MSG_WARN([xrd application will be built without GNU readline support])
-fi
 
 CPPFLAGS="$CPPFLAGS_BUP"
 LDFLAGS="$LDFLAGS_BUP"
