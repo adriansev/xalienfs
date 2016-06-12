@@ -41,7 +41,7 @@
   int DOENV_x4 = EnvGetLong(NAME_RECONNECTWAIT);EnvPutInt(NAME_RECONNECTWAIT,1); \
   int DOENV_x5 = EnvGetLong(NAME_FIRSTCONNECTMAXCNT);EnvPutInt(NAME_FIRSTCONNECTMAXCNT,1); \
   int DOENV_x6 = EnvGetLong(NAME_READAHEADSIZE);EnvPutInt(NAME_READAHEADSIZE,0); \
-  int DOENV_x7 = EnvGetLong(NAME_READCACHESIZE);EnvPutInt(NAME_READCACHESIZE,0);  
+  int DOENV_x7 = EnvGetLong(NAME_READCACHESIZE);EnvPutInt(NAME_READCACHESIZE,0);
 //  int DOENV_x8 = EnvGetLong(NAME_DATASERVERCONN_TTL);EnvPutInt(NAME_DATASERVERCONN_TTL, 10);
 #define UNDOENV \
   EnvPutInt(NAME_CONNECTTIMEOUT,DOENV_x1); \
@@ -50,7 +50,7 @@
   EnvPutInt(NAME_RECONNECTWAIT,DOENV_x4); \
   EnvPutInt(NAME_FIRSTCONNECTMAXCNT,DOENV_x5); \
   EnvPutInt(NAME_READAHEADSIZE,DOENV_x6); \
-  EnvPutInt(NAME_READCACHESIZE,DOENV_x7); 
+  EnvPutInt(NAME_READCACHESIZE,DOENV_x7);
 //  EnvPutInt(NAME_DATASERVERCONN_TTL,DOENV_x8);
 
 
@@ -80,8 +80,6 @@ char* _rettime() {
   return ptime;
 }
 
-
-
 struct ns__token {
   int port;
   int session_id;
@@ -107,8 +105,7 @@ gclient::gclient(bool storeToken): fConnected(false),streamIndex(0), columnIndex
   // initialize random generator
   srandom(time(NULL));
 
-  if (storeToken)
-    fConnected=true;
+  if (storeToken) { fConnected = true; }
 
   codec = new TBytestreamCODEC();
   fdecoutputstream=NULL;
@@ -117,9 +114,7 @@ gclient::gclient(bool storeToken): fConnected(false),streamIndex(0), columnIndex
   fEncryptReply=0;
   fRemoteDebug="0";
 
-  if (getenv("DEBUG_GCLIENT")) {
-    EnvPutInt(NAME_DEBUG,atoi(getenv("DEBUG_GCLIENT")));
-  }
+  if (getenv("DEBUG_GCLIENT")) { EnvPutInt(NAME_DEBUG,atoi(getenv("DEBUG_GCLIENT"))); }
 }
 
 gclient::~gclient() {
@@ -129,7 +124,7 @@ gclient::~gclient() {
 
 /**
    Connect to an authentication port to obtain a session and a token
-   with the needed information. 
+   with the needed information.
 
    A list of servers can be specified with the environment variable
    GCLIENT_SERVER_LIST. The format is:
@@ -146,169 +141,158 @@ gclient::~gclient() {
 
    @return returns true if connect succeeded
 */
-bool gclient::Connect(const char *host,
-		      int port, const char *user, const char *password) {
+bool gclient::Connect(const char *host, int port, const char *user, const char *password) {
   char serverlist[4096];
   char* serverurl[16]; // max 16 servers in a server list
   int nserver=0;
 
   memset(serverurl,0,sizeof(serverurl));
 
-  if (password) {
-    fPassword = password;
-  } else {
-    fPassword = "";
-  }
+  if (password)
+    { fPassword = password; }
+  else
+    { fPassword = ""; }
 
   if (getenv("GCLIENT_SERVER_LIST")) {
       sprintf(serverlist,"%s",getenv("GCLIENT_SERVER_LIST"));
       if (!strlen(serverlist)) {
-	fConnected=false;
-	fprintf(stderr, "No servers configured in GCLIENT_SERVER_LIST - cannot connect - aborting this application!\n"); 
-	SetErrorType("client:connect:no_emptyserverlist");
-	exit(-1);
+	      fConnected=false;
+	      fprintf(stderr, "No servers configured in GCLIENT_SERVER_LIST - cannot connect - aborting this application!\n");
+	      SetErrorType("client:connect:no_emptyserverlist");
+	      exit(-1);
       }
       char* sptr=serverlist;
       char* tok=0;
       while ((tok=strtok(sptr,"|"))) {
-	  if (sptr)
-	      sptr=0;
-	  DEBUGMSG(3,<< "Adding Server " << tok << " to list of servers\n");
-	  serverurl[nserver] = tok;
-	  nserver++;
+	      if (sptr) { sptr=0; }
+	      DEBUGMSG(3,<< "Adding Server " << tok << " to list of servers\n");
+    	  serverurl[nserver] = tok;
+	      nserver++;
       }
   } else {
       if((host==NULL) || (strlen(host)==0)) {
-	  if(getenv("GCLIENT_SERVER_NAME")==NULL) {
-	      SetErrorType("client:connect:no_host");
-	      return(false);
-	  }
-	  host=getenv("GCLIENT_SERVER_NAME");
-	  if ( (host==NULL) || (strlen(host)==0)) {
-	    SetErrorType("client:connect:no_host");
-	    return(false);
-	  }
+	      if(getenv("GCLIENT_SERVER_NAME")==NULL) {
+  	      SetErrorType("client:connect:no_host");
+	        return(false);
+	        }
+	      host=getenv("GCLIENT_SERVER_NAME");
+	      if ( (host==NULL) || (strlen(host)==0)) {
+	        SetErrorType("client:connect:no_host");
+	        return(false);
+	        }
       }
-      if(port<=0) {
-	  if(getenv("GCLIENT_SERVER_PORT")==NULL) {
-	      SetErrorType("client:connect:no_port");
-	      return(false);
-	  }
-	  port=atoi(getenv("GCLIENT_SERVER_PORT"));
-      }
+
+      if (port<=0) {
+	      if(getenv("GCLIENT_SERVER_PORT")==NULL) {
+	        SetErrorType("client:connect:no_port");
+	        return(false);
+	        }
+        port=atoi(getenv("GCLIENT_SERVER_PORT"));
+        }
+
       if(user==NULL) {
-	  if(getenv("GCLIENT_USER")==NULL) {
-	      SetErrorType("client:connect:no_user");
-	      return(false);
-	  }
-	  user=getenv("GCLIENT_USER");
+	      if(getenv("GCLIENT_USER")==NULL) {
+	        SetErrorType("client:connect:no_user");
+	        return(false);
+	      }
+  	  user=getenv("GCLIENT_USER");
       }
-      nserver++;
+
+    nserver++;
   }
 
-  
   random();
   int cyclserv=1+(int) (1.0*nserver*random()/(RAND_MAX+1.0));
   DEBUGMSG(3,<< "Selected Server " << cyclserv << " \n");
   for (int serv=0; serv<nserver;serv++)  {
-      // try to connect to one of given gservers in a cycle, starting with a random server
-      cyclserv++;
-      cyclserv%=nserver;
+    // try to connect to one of given gservers in a cycle, starting with a random server
+    cyclserv++;
+    cyclserv%=nserver;
 
-      fConnected=false;
+    fConnected=false;
 
-      if ( (serverurl[0]==0) && (nserver==1) ) {
-	  fPort=port;
-	  fHost=host;
-	  fUser=user;
-      } else {
-	  string surl = serverurl[cyclserv];
-	  string::size_type pos = surl.find(":",0);
-	  string::size_type length = surl.length();
-	  fHost= surl.substr(0,pos);
-	  fPort= atoi((surl.substr(pos+1,length-pos-1)).c_str());	
-	  if (user==NULL) {
+    if ( (serverurl[0]==0) && (nserver==1) ) {
+	    fPort=port;
+	    fHost=host;
+	    fUser=user;
+    } else {
+	    string surl = serverurl[cyclserv];
+	    string::size_type pos = surl.find(":",0);
+	    string::size_type length = surl.length();
+	    fHost= surl.substr(0,pos);
+	    fPort= atoi((surl.substr(pos+1,length-pos-1)).c_str());
+
+     if (user==NULL) {
 	      if(getenv("GCLIENT_USER")==NULL) {
-		  SetErrorType("client:connect:no_user");
-		  return(false);
-	      } 
-	      fUser=getenv("GCLIENT_USER");
-	  } else {
-	      fUser=user;
-	  }
-      }
-      fauthMode=AUTH_GSI;
+	       SetErrorType("client:connect:no_user");
+	       return(false);
+	       }
+     fUser=getenv("GCLIENT_USER");
+     }
+     else
+      { fUser=user; }
 
-      unsetenv("XrdSecNoSSL");
-      SetURL();
-      // here we do a special hook to support automatic configuration
-      if (getenv("X509_CERT_DIR")) {
-	setenv("XrdSecSSLCADIR",getenv("X509_CERT_DIR"),1);
-      } else {
-	if ((! getenv("XrdSecSSLCADIR")) && (getenv("ROOTSYS"))) {
-	  static bool notshown = true;
-	  std::string cadir = getenv("ROOTSYS");
-	  cadir += "/share/certificates";
-	  setenv("XrdSecSSLCADIR",cadir.c_str(),1);
-	  if (notshown) {
-	  cout << "=> autoconfigure ca-dir to " << cadir.c_str() << endl;
-	  notshown = false;
-	  }
-	}
+    }
+
+    fauthMode=AUTH_GSI;
+
+    unsetenv("XrdSecNoSSL");
+    SetURL();
+    // here we do a special hook to support automatic configuration
+    if (getenv("X509_CERT_DIR"))
+      { setenv("XrdSecSSLCADIR",getenv("X509_CERT_DIR"),1); }
+    else
+      {
+    	if ((! getenv("XrdSecSSLCADIR")) && (getenv("ROOTSYS"))) {
+        static bool notshown = true;
+  	    std::string cadir = getenv("ROOTSYS");
+    	  cadir += "/share/certificates";
+    	  setenv("XrdSecSSLCADIR",cadir.c_str(),1);
+    	  if (notshown) {	notshown = false; cout << "=> autoconfigure ca-dir to " << cadir.c_str() << endl; }
+	      }
       }
 
       cout << "=> Trying to connect to Server [" << cyclserv << "] " << fURL << " as User " << fUser<<" \n";
 
-   
       if (getenv("GCLIENT_NOGSI")) {
-	// prevent GSI authentication
-	fauthMode=AUTH_NONE;
-      }
+      	// prevent GSI authentication
+      	fauthMode=AUTH_NONE;
+        }
 
       if ((getenv("ALIEN_PROC_ID")) && (getenv("ALIEN_JOB_TOKEN")) && (!getenv("GCLIENT_NOTOKEN"))){
-	// set sss authentication
-	fauthMode=AUTH_JOBTOKEN;
-	setenv("XrdSecNoSSL","1",1);
-      }
-  
+      	// set sss authentication
+      	fauthMode=AUTH_JOBTOKEN;
+      	setenv("XrdSecNoSSL","1",1);
+        }
+
       if (fauthMode==AUTH_NONE) {
-	SetErrorDetail("No authentication method can be tried!");
-	continue;
+      	SetErrorDetail("No authentication method can be tried!");
+      	continue;
+        }
+
+      bool authenticated=false;
+      if (fauthMode== AUTH_GSI) { DEBUGMSG(5, << "trying authentication: GSI" << "\n");
+
+    	if(GSIgetToken()==0)
+        { DEBUGMSG(5,<< "GSI authentication ok\n"); authenticated=true; }
+      else
+        { DEBUGMSG(5,<< "GSI authentication failed\n"); }
       }
 
-	
-      bool authenticated=false;
-      if (fauthMode== AUTH_GSI) {
-	DEBUGMSG(5, << "trying authentication: GSI"
-		 << "\n");
-	
-	if(GSIgetToken()==0) {
-	  DEBUGMSG(5,<< "GSI authentication ok\n");
-	  authenticated=true;
-	} else {
-	  DEBUGMSG(5,<< "GSI authentication failed\n");
-	}
-      }
-      
       if(fauthMode == AUTH_JOBTOKEN) {
-	fauthMode=AUTH_JOBTOKEN;
-	if(SSLgetToken()==0) {
-	  authenticated=true;
-	  DEBUGMSG(5,<< "jobtoken authentication ok\n");
-	} 
-      }
-	
+      	fauthMode=AUTH_JOBTOKEN;
+      	if(SSLgetToken()==0) { authenticated=true; DEBUGMSG(5,<< "jobtoken authentication ok\n"); }
+        }
+
       if (authenticated) {
-	if(fStoreToken) {
-	  WriteToken(Tokenfilename());
-	}
-	fConnected=true;
-	return true;
-      }
+      	if(fStoreToken) { WriteToken(Tokenfilename()); }
+      	fConnected=true;
+      	return true;
+        }
   }
   return false;
 }
-  
+
 /**
    Reconnects to the service stored in the token (necessary if the
    server closed the session due to exceeded idle time)
@@ -324,26 +308,18 @@ bool gclient::Reconnect() {
 
   fprintf(stderr,"Warning [%s] GCLIENT::Reconnect\n",_rettime());
   if(fauthMode==AUTH_JOBTOKEN) {
-    if(SSLgetToken()<0) {
-      SetErrorType("client:reconnect:SSL");
-      return false;
+    if(SSLgetToken()<0) { SetErrorType("client:reconnect:SSL"); return false; }
     }
-  }
-  
+
   if(fauthMode==AUTH_GSI) {
     // remove in any case
     unsetenv("XrdSecNoSSL");
-    if(GSIgetToken()<0) {
-      SetErrorType("client:reconnect:GSI");
-      return(false);
+    if(GSIgetToken()<0) { SetErrorType("client:reconnect:GSI"); return(false); }
     }
-  }
 
   SetURL();
 
-  if(fStoreToken) {
-    WriteToken(Tokenfilename());
-  }
+  if(fStoreToken) { WriteToken(Tokenfilename()); }
 
   fConnected=true;
   return true;
@@ -362,11 +338,11 @@ int gclient::SSLgetToken(const char* password) {
 
   try {
     std::string fNonceString;
-    
+
     DEBUGMSG(5,<< "authentication url=" << GetAuthenURL().c_str() << "\n");
-    
+
     DEBUGMSG(5,<< "Calling JobToken get token\n");
-    
+
     char value[4096]; value[0] = 0;;
     XrdOucString request;
     request = GetAuthenURL().c_str();
@@ -387,60 +363,57 @@ int gclient::SSLgetToken(const char* password) {
 
     if (response>0) {
       XrdOucEnv respenv(value);
-    
-      if (respenv.Get("xalien.session_user")) {
-	fUser = respenv.Get("xalien.session_user");
-      } else {
-	fUser ="nobody";
-      }
-      if (respenv.Get("xalien.session_passwd")) {
-	fTokenPassword = respenv.Get("xalien.session_passwd");
-      } else {
-	fTokenPassword = "-";
-      }
-      if (respenv.Get("xalien.session_id")) {
-	fTokenSID = atoi(respenv.Get("xalien.session_id"));
-      } else {
-	fTokenSID = -1;
-      }
-      if (respenv.Get("xalien.session_expiretime")) {
-	fExpiretime = strtol(respenv.Get("xalien.session_expiretime"),0,0);
-      } else {
-	fExpiretime = 0;
-      }
-      if (respenv.Get("xalien.nonce")) {
-	fNonceString = respenv.Get("xalien.nonce");
-      } else {
-	fNonceString = "";	
-      }
-    } else {
+
+      if (respenv.Get("xalien.session_user"))
+        { fUser = respenv.Get("xalien.session_user"); }
+      else
+        { fUser ="nobody"; }
+
+      if (respenv.Get("xalien.session_passwd"))
+        { fTokenPassword = respenv.Get("xalien.session_passwd"); }
+      else
+        { fTokenPassword = "-"; }
+
+      if (respenv.Get("xalien.session_id"))
+        {	fTokenSID = atoi(respenv.Get("xalien.session_id")); }
+      else
+        {	fTokenSID = -1; }
+
+      if (respenv.Get("xalien.session_expiretime"))
+        {	fExpiretime = strtol(respenv.Get("xalien.session_expiretime"),0,0); }
+      else
+        { fExpiretime = 0; }
+
+      if (respenv.Get("xalien.nonce"))
+        {	fNonceString = respenv.Get("xalien.nonce"); }
+      else
+        { fNonceString = ""; }
+      } // if (response > 0)
+    else {
       SetErrorType("server:authentication:SSL:gettoken");
       struct ServerResponseBody_Error *e;
-      if (( e = admin.LastServerError()) ) {
-	SetErrorDetail(e->errmsg);
-      } else {
-	SetErrorDetail("unknown");
-      }
+      if (( e = admin.LastServerError()) )
+        { SetErrorDetail(e->errmsg); }
+      else
+        { SetErrorDetail("unknown"); }
       return (-1);
     }
-    
+
     if (!fNonceString.length()) {
       SetErrorType("server:authentication:SSL:gettoken");
       SetErrorDetail("server didn't reply with a nonce");
       return (-1);
     }
-    
+
     DEBUGMSG(8, << "returned authentication token: port=" << fPort << "\n"
 	     << "           session_passwd=" << fTokenPassword << "\n"
 	     << "           session_id=" << fTokenSID << "\n");
-    
-    
+
+
     TSharedAuthentication::StringToNonce((char*)fNonceString.c_str(),fNonce);
     fauthMode = AUTH_JOBTOKEN;
-  } catch (...) {
-    DEBUGMSG(5,<< "catched exception - recovering\n");
-    return (-1);
-  }
+  } // end of try
+  catch (...) { DEBUGMSG(5,<< "catched exception - recovering\n"); return (-1); }
 
   return(0);
 }
@@ -455,19 +428,18 @@ int gclient::GSIgetToken() {
 
   try {
     std::string fNonceString;
-    
+
     DEBUGMSG(5,<< "authentication url=" << GetAuthenURL().c_str() << "\n");
-    
+
     DEBUGMSG(5,<< "Calling GSI get token\n");
-    
+
     char value[4096]; value[0] = 0;;
     XrdOucString request;
     request = GetAuthenURL().c_str();
     request += "?";
     request += "xalien.user="; request += fUser.c_str();
     request += "&xalien.cmd=getToken";
-    
-    
+
     DOENV;
     XrdClientAdmin admin(request.c_str());
     //    if (!firstcall) {
@@ -478,7 +450,7 @@ int gclient::GSIgetToken() {
     //      }
     //    } else {
     //      firstcall=false;
-    //    } 
+    //    }
     admin.Connect();
 
     XrdOucString str(request.c_str());
@@ -488,67 +460,62 @@ int gclient::GSIgetToken() {
 
     if (response>0) {
       XrdOucEnv respenv(value);
-    
-      if (respenv.Get("xalien.session_user")) {
-	fUser = respenv.Get("xalien.session_user");
-      } else {
-	fUser ="nobody";
-      }
-      if (respenv.Get("xalien.session_passwd")) {
-	fTokenPassword = respenv.Get("xalien.session_passwd");
-      } else {
-	fTokenPassword = "-";
-      }
-      if (respenv.Get("xalien.session_id")) {
-	fTokenSID = atoi(respenv.Get("xalien.session_id"));
-      } else {
-	fTokenSID = -1;
-      }
-      if (respenv.Get("xalien.session_expiretime")) {
-	fExpiretime = strtol(respenv.Get("xalien.session_expiretime"),0,0);
-      } else {
-	fExpiretime = 0;
-      }
-      if (respenv.Get("xalien.nonce")) {
-	fNonceString = respenv.Get("xalien.nonce");
-      } else {
-	fNonceString = "";
-      }
-    } else {
+
+      if (respenv.Get("xalien.session_user"))
+        { fUser = respenv.Get("xalien.session_user"); }
+      else
+        { fUser ="nobody"; }
+
+      if (respenv.Get("xalien.session_passwd"))
+        { fTokenPassword = respenv.Get("xalien.session_passwd"); }
+      else
+        { fTokenPassword = "-"; }
+
+      if (respenv.Get("xalien.session_id"))
+        { fTokenSID = atoi(respenv.Get("xalien.session_id")); }
+      else
+        { fTokenSID = -1; }
+
+      if (respenv.Get("xalien.session_expiretime"))
+        { fExpiretime = strtol(respenv.Get("xalien.session_expiretime"),0,0); }
+      else
+        {	fExpiretime = 0; }
+
+      if (respenv.Get("xalien.nonce"))
+        { fNonceString = respenv.Get("xalien.nonce"); }
+      else
+        { fNonceString = ""; }
+
+      } // if (response > 0)
+    else
+      {
       SetErrorType("server:authentication:GSI:gettoken");
       struct ServerResponseBody_Error *e;
-      if (( e = admin.LastServerError()) ) {
-	SetErrorDetail(e->errmsg);
-      } else {
-	SetErrorDetail("unknown");
-      }
+      if (( e = admin.LastServerError()) )
+        { SetErrorDetail(e->errmsg); }
+      else
+        { SetErrorDetail("unknown"); }
       return (-1);
-    }
-    
+      }
+
     if (!fNonceString.length()) {
       SetErrorType("server:authentication:GSI:gettoken");
       SetErrorDetail("server didn't reply with a nonce");
       return (-1);
     }
-    
+
     DEBUGMSG(8, << "returned authentication token: port=" << fPort << "\n"
 	     << "           session_passwd=" << fTokenPassword << "\n"
 	     << "           session_id=" << fTokenSID << "\n");
-    
-    
+
+
     TSharedAuthentication::StringToNonce((char*)fNonceString.c_str(),fNonce);
     fauthMode = AUTH_GSI;
-  } catch (...) {
-    DEBUGMSG(5,<< "catched exception - recovering\n");
-    return (-1);
-  }
+  } // end of try
+  catch (...) { DEBUGMSG(5,<< "catched exception - recovering\n"); return (-1); }
 
-  return(0);
+return(0);
 }
-
-
-
-
 
 /**
    tests connection with the main communication port of the server
@@ -558,10 +525,10 @@ int gclient::GSIgetToken() {
 int gclient::ping(void) {
 
   if(!fConnected) {
-          DEBUGMSG(1,<< "not connected\n");
-	  SetErrorType("client:not_connected");
-          return(0);
-  }
+    DEBUGMSG(1,<< "not connected\n");
+    SetErrorType("client:not_connected");
+    return(0);
+    }
   // otherwise 0;
   return(1);
 }
@@ -588,11 +555,10 @@ void gclient::Shell() {
   }
 
   Command("cd"); // for setting cwd
-  
+
   while(1) {
     stringstream promptstr;
-    promptstr << fUser << "@" << fHost << ":" << fAuthenPort 
-	      << " " << cwd() << " >";
+    promptstr << fUser << "@" << fHost << ":" << fAuthenPort << " " << cwd() << " >";
     string prompt=promptstr.str();
 
     char *cmdline = readline(prompt.c_str());
@@ -608,38 +574,32 @@ void gclient::Shell() {
     add_history(cmdline);
 #endif
 
-    if(!strcmp(cmdline,"quit") || !strcmp(cmdline,"exit")) {
-      free(cmdline);
-      break;
-    }
+    if(!strcmp(cmdline,"quit") || !strcmp(cmdline,"exit")) { free(cmdline); break; }
+
     if(!strcmp(cmdline,"gclient_dump")) {
       flag_dumpresult=!flag_dumpresult;
       cout << "gclient dump mode: " << flag_dumpresult << "\n";
       continue;
-    }
+      }
 
     if(!Command(cmdline)) {
       t_gerror gerror = GetErrorType();
-      if(ErrorMatches(gerror,"server:authentication")) {
-	cerr << "authentication failed; reconnect to the service!\n";
-	return;
+      if(ErrorMatches(gerror,"server:authentication"))
+        { cerr << "authentication failed; reconnect to the service!\n"; return; }
+
+      if(ErrorMatches(gerror,"server:session_expired"))
+        {
+      	DEBUGMSG(1,<< "session expired, reconnecting...\n");
+      	if(!Reconnect())
+          { DEBUGMSG(1, << "unable to reconnect to " << GetAuthenURL().c_str() << "\n"); exit(-1); }
+        }
       }
-      if(ErrorMatches(gerror,"server:session_expired")) {
-	DEBUGMSG(1,<< "session expired, reconnecting...\n");
-	if(!Reconnect()) {
-	  DEBUGMSG(1, << "unable to reconnect to " << GetAuthenURL().c_str() << "\n");
-	  exit(-1);
-	}
-      }
-    }
-    
-    
-    if(flag_dumpresult) {
-      DebugDumpStreams();
-    } else {
-      PrintCommandStderr();
-      PrintCommandStdout();
-    }
+
+
+    if(flag_dumpresult)
+      { DebugDumpStreams(); }
+    else
+      { PrintCommandStderr(); PrintCommandStdout(); }
 
     free(cmdline);
   }
@@ -711,39 +671,37 @@ bool gclient::Command(const char *command) {
   if (getenv("GCLIENT_COMMAND_RETRY")) {
     maxtry = atoi(getenv("GCLIENT_COMMAND_RETRY"));
   }
+
   if (getenv("GCLIENT_COMMAND_MAXWAIT")) {
     maxwait = atoi(getenv("GCLIENT_COMMAND_MAXWAIT"));
   }
+
   if (getenv("GCLIENT_SERVER_RESELECT")) {
     serverreselect = atoi(getenv("GCLIENT_SERVER_RESELECT"));
   }
+
   if (getenv("GCLIENT_SERVER_RECONNECT")) {
     serverreconnect = atoi(getenv("GCLIENT_SERVER_RECONNECT"));
   }
+
   if (getenv("GCLIENT_RETRY_SLEEPTIME")) {
     retrysleep = atoi(getenv("GCLIENT_RETRY_SLEEPTIME"));
   }
+
   if (getenv("GCLIENT_RETRY_DAMPING")) {
     dampingfactor = atof("getenv(GCLIENT_RETRY_DAMPING");
   }
 
   // rescale to usefule values
-  if (retrysleep <=0) {
-    retrysleep = 5;
-  }
-  if (retrysleep > 300) {
-    retrysleep = 300;
-  }
-  if (maxwait <=0) {
-    maxwait = 3600*24; // more than a day makes no sense
-  }
-  if (dampingfactor<1) {
-    dampingfactor=1.2;
-  }
-  if (dampingfactor > 2.0) {
-    dampingfactor=2.0;
-  }
+  if (retrysleep <=0) { retrysleep = 5; }
 
+  if (retrysleep > 300) { retrysleep = 300;  }
+
+  if (maxwait <=0) { maxwait = 3600*24; } // more than a day makes no sense
+
+  if (dampingfactor<1) { dampingfactor=1.2; }
+
+  if (dampingfactor > 2.0) { dampingfactor=2.0; }
 
   int tryselect=0;
   int tryconnect=0;
@@ -836,7 +794,7 @@ bool gclient::InternalCommand(const char *command) {
     setCWD(gridcwd);
   }
   take_time(t2);
-  int fd;
+  int fd = 0;
 
   DEBUGMSG(5, << "fStoreToken is " << fStoreToken << "\n");
   if(fStoreToken) {
@@ -1135,23 +1093,19 @@ bool gclient::InternalCommand(const char *command) {
     memcpy(fNonce,spc_cipherq_getnonce(fcq),SHMAUTH_NONCE_SIZE);
     if(fStoreToken) {
       WriteToken(filename);
-      if(flock(fd,LOCK_UN)!=0) {
-	fprintf(stderr,"WARNING: failed to unlock tokenfile\n");
-      }
+      if(flock(fd,LOCK_UN)!=0) { fprintf(stderr,"WARNING: failed to unlock tokenfile\n"); }
       close(fd);
     }
-    
     return(false);
-  } 
+  }
+
   if(fdecoutputstream) free(fdecoutputstream);
 
   if(fEncryptReply) {
     DEBUGMSG(5,<< "DECRYPTING SERVER'S RESULT STRING\n");
     DEBUGMSG(7,<< "result string: >" << outputstream << "<\n");
-    
-    fdecoutputstream=(char *)
-      spc_cipherq_b64decrypt(fcq,(unsigned char*) outputstream,
-			     &cryptlen);
+
+    fdecoutputstream=(char *) spc_cipherq_b64decrypt(fcq,(unsigned char*) outputstream, &cryptlen);
 
     if (outputstream) {
       // free the encoded stream here
@@ -1160,17 +1114,15 @@ bool gclient::InternalCommand(const char *command) {
 
     if(!fdecoutputstream) {
       SetErrorType("client:result:decrypt");
-      
+
       memcpy(fNonce,spc_cipherq_getnonce(fcq),SHMAUTH_NONCE_SIZE);
       if(fStoreToken) {
-	WriteToken(filename);
-	if(flock(fd,LOCK_UN)!=0) {
-	  fprintf(stderr,"WARNING: failed to unlock tokenfile\n");
-	}
-	close(fd);
-	return(false);
+      	WriteToken(filename);
+      	if(flock(fd,LOCK_UN)!=0) { fprintf(stderr,"WARNING: failed to unlock tokenfile\n");	}
+	      close(fd);
+      	return(false);
+        }
       }
-    } 
   } else {
     // that is not really perfect
     fdecoutputstream=strdup(outputstream);
@@ -1183,23 +1135,18 @@ bool gclient::InternalCommand(const char *command) {
 
   // get env hash and set environment
   std::map<std::string,std::string> envhash;
-  for(int i=0;i<codec->GetStreamField(codec->kENVIR,0,
-				    TBytestreamCODEC::kFieldname);i++) {
+  for(int i=0;i<codec->GetStreamField(codec->kENVIR, 0, TBytestreamCODEC::kFieldname);i++) {
     //DEBUGMSG(10, << "Filling env hash\n"
     //     << codec->GetFieldName(codec->kENVIR,0,i)
     //     << " => "<< codec->GetFieldValue(codec->kENVIR,0,i) << "\n");
-    envhash[codec->GetFieldName(codec->kENVIR,0,i)]=
-	    codec->GetFieldValue(codec->kENVIR,0,i);
+    envhash[codec->GetFieldName(codec->kENVIR,0,i)]= codec->GetFieldValue(codec->kENVIR,0,i);
   }
 
   if(envhash.find("error")!=envhash.end()) {
     SetErrorType(envhash["error"].c_str());
-    if(envhash.find("errortxt")!=envhash.end())
-      SetErrorDetail(envhash["errortxt"].c_str());
+    if(envhash.find("errortxt")!=envhash.end()) { SetErrorDetail(envhash["errortxt"].c_str()); }
     if(fStoreToken) {
-      if(flock(fd,LOCK_UN)!=0) {
-	fprintf(stderr,"WARNING: failed to unlock tokenfile\n");
-      }
+      if(flock(fd,LOCK_UN)!=0) { fprintf(stderr,"WARNING: failed to unlock tokenfile\n"); }
       close(fd);
     }
     return(false);
@@ -1216,14 +1163,12 @@ bool gclient::InternalCommand(const char *command) {
   endOfFile = false;
   streamIndex = columnIndex = fieldIndex = charIndex=0;
 
-
   memcpy(fNonce,spc_cipherq_getnonce(fcq),SHMAUTH_NONCE_SIZE);
   TSharedAuthentication::IncrementNonce(fNonce);
+
   if(fStoreToken) {
     WriteToken(filename);
-    if(flock(fd,LOCK_UN)!=0) {
-      fprintf(stderr,"WARNING: failed to unlock tokenfile\n");
-    }
+    if(flock(fd,LOCK_UN)!=0) { fprintf(stderr,"WARNING: failed to unlock tokenfile\n"); }
     close(fd);
   }
 
