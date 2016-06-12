@@ -10,9 +10,12 @@ int g_init;
 
 static PerlInterpreter *my_perl;
 
-static void xs_init (void);
+// PERL_CALLCONV int perl_parse(PerlInterpreter *my_perl, XSINIT_t xsinit, int argc, char** argv, char** env)
+static void xs_init (void); // should return XSINIT_t ?
 int g_connect=0;
-EXTERN_C void boot_DynaLoader (CV* cv);
+
+// PERL_CALLCONV CV* Perl_newXS(pTHX_ const char *name, XSUBADDR_t subaddr, const char *filename)
+EXTERN_C void boot_DynaLoader (CV* cv); // should return XSUBADDR_t ?
 
 /**
    This function is passed into the perl_parse function and enables
@@ -73,7 +76,7 @@ int C2PERLInit(const char *perlmodule)
   perl_construct(my_perl);
 
    
-
+// PERL_CALLCONV int perl_parse(PerlInterpreter *my_perl, XSINIT_t xsinit, int argc, char** argv, char** env)
   perl_parse(my_perl, xs_init, 2, cmds, NULL);
 /*  PL_exit_flags |= PERL_EXIT_DESTRUCT_END;*/
 
