@@ -7,8 +7,12 @@ AM_INIT_AUTOMAKE([1.6.3 subdir-objects])
 
 AC_CONFIG_MACRO_DIR([m4])
 
-#CXXFLAGS="-Wall -Werror -Wno-deprecated -g $CXXFLAGS"
-CXXFLAGS="-Wall -Wno-deprecated -g $CXXFLAGS"
+DEBUG="-g -ggdb"
+OPTIM="-O2"
+
+#ERROR="-Werror"
+
+CXXFLAGS="-Wall -Wno-deprecated $ERROR $DEBUG $OPTIM $CXXFLAGS"
 
 case "$target_os" in
    tiger*)
@@ -54,18 +58,14 @@ AC_SUBST(MARK64)
 AC_ARG_WITH(xrootd-location,
           [  --with-xrootd-location=installation of xrootd version to use],
           [XROOTD_LOCATION=$withval],
-          [XROOTD_LOCATION=/usr])
-
-AC_ARG_WITH(root-location,
-	  [  --with-root-location=installation of root version containing xrootd to use],
-	  [XROOTD_LOCATION=$withval/net/xrootd/src/xrootd/])
+          [XROOTD_LOCATION=/usr/])
 
 AC_SUBST(XROOTD_LOCATION)
 
 AC_ARG_WITH(certificate-directory,
           [  --with-certificate-directory=installation of grid certificates for verification to use],
           [CERTIFICATE_LOCATION=$withval],
-          [CERTIFICATE_LOCATION=$prefix])
+          [CERTIFICATE_LOCATION=/etc/grid-security/certificates/])
 
 AC_SUBST(CERTIFICATE_LOCATION)
 
@@ -146,14 +146,14 @@ AC_ARG_ENABLE(build-server,
 AM_CONDITIONAL([BUILD_SERVER], [test "$build_server" = yes])
 
 if test x"$build_server" = xyes
-then 
+then
 
 #################################################################
 # PERL options
 AC_ARG_WITH(perl,
             [  --with-perl = path to perl executable],
             PERL=$withval,
-            PERL=/opt/alien/bin/alien-perl)
+            PERL=/usr/bin/perl)
 AC_SUBST(PERL)
 
 # get the correct library options and link flags for perl
@@ -205,7 +205,7 @@ if test x"$enable_perlmodule"  != x; then
 
 AC_ARG_WITH(swig,
 	    [  --with-swig=PATH  directory containing swig installation (e.g. <prefix>/bin/swig ..) ],
-               [SWIG_DIR="$withval/bin/"])
+               [SWIG_DIR="/usr/"])
 
 AC_PATH_PROG(SWIG,swig,[no],[$SWIG_DIR:$PATH])
 
@@ -213,22 +213,7 @@ if test x"$SWIG" = xno; then
   AC_MSG_ERROR([I was not able to find the swig executable needed for the perl client])
 fi
 
-AC_ARG_WITH(swig-inc,
-	    [  --with-swig-inc=PATH  directory with swig include files) ],
-               [SWIG_INC="$withval"])
-
-if ! test -d "$SWIG_INC"; then 
-  AC_MSG_ERROR([I was not able to find the swig include path you specified])
-fi 
-
-if test x"$SWIG" = xno; then
-  AC_MSG_ERROR([I was not able to find the swig executable needed for the perl client])
-fi
-
-AC_SUBST(SWIG_INC)
-
-fi
-
+fi # end of enable_perlmodule
 
 #################################################################
 # Cryptography options
@@ -264,7 +249,7 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([sys/time.h])
 
 # Check for xrootd headers
-if ! test -e "/usr/include/xrootd/XrdOuc/XrdOucString.hh"
+if ! test -e "$XROOTD_LOCATION/include/xrootd/XrdVersion.hh"
 then
       AC_MSG_ERROR([xrootd header files could not be found])
 fi
@@ -285,13 +270,13 @@ AC_CONFIG_FILES([Makefile
 		 server/Makefile
 		 client/Makefile
 		 base/Makefile
-                 client/gclientlib/Makefile
-                 client/clients/Makefile
-                 base/ShmAuth/Makefile
+     client/gclientlib/Makefile
+     client/clients/Makefile
+     base/ShmAuth/Makefile
 		 server/C2Perl/Makefile
 		 base/CODEC/Makefile
-                 base/cwccrypt/Makefile
-                 base/cwccrypt/gaes/Makefile])
+     base/cwccrypt/Makefile
+     base/cwccrypt/gaes/Makefile])
 
 ln -s . server/XrdxAlienFs
 
