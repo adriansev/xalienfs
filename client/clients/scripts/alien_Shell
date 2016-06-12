@@ -68,7 +68,7 @@ export LOCALHOME=$HOME
 export HOME=$alien_HOME
 unset alien_HOME
 test -e $LOCALHOME/.alienshrc && source $LOCALHOME/.alienshrc
-test -z $GSHELL_SILENT && echo " [ aliensh 1.0.14dx (C) ARDA/Alice: Andreas.Joachim.Peters@cern.ch/Derek.Feichtinger@cern.ch] "
+test -z $GSHELL_SILENT && echo " [ aliensh 1.0.140x (C) ARDA/Alice: Andreas.Joachim.Peters@cern.ch/Derek.Feichtinger@cern.ch] "
 
 source $GSHELL_ROOT/etc/alien_bash_completion.gShell
 test -z $GSHELL_SILENT && test $GSHELL_COLOR && export PS1="\e[31;47;2maliensh\e[49;34m:[$alien_API_VO] [\#] \e[49;31;4m${alien_PWD} >\e[0m";

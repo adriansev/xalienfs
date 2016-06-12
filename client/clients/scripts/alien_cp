@@ -161,6 +161,7 @@ my $dst={};
 my $verbose;
 my $silent;
 my $force="-f";
+my $xrdcpoptions="-DITransactionTimeout 60 -DIRequestTimeout 30 -DIConnectTimeout 10 -DIFirstConnectMaxCnt 4";
 my $newversion;
 
 if ($options{v}) {
@@ -736,7 +737,7 @@ if ($srcok && $dstok) {
 		$atime,$mtime,$ctime,$blksize,$blocks)
 		= stat($src->{turl} );
 	    $dst->{size} = $size;
-	    $command = "$xrdcpbin $src->{turl} $dst->{$j}->{turl} -OD\\\&authz=\"$dst->{$j}->{envelope}\" $verbose $silent $force";
+	    $command = "$xrdcpbin $src->{turl} $dst->{$j}->{turl} -OD\\\&authz=\"$dst->{$j}->{envelope}\" $verbose $silent $force $xrdcpoptions";
 
 	    if (run_command($command)) {
 		printf STDERR "error: ($PROGNAME) copy command failed \n";
@@ -758,7 +759,7 @@ if ($srcok && $dstok) {
     }
     
     if ( ($src->{mode} eq "GRID") && ($dst->{mode} eq "LOCAL") ) {
-	$command = "$xrdcpbin $src->{turl} $dst->{turl} -OS\\\&authz=\"$src->{envelope}\" $verbose $silent $force";
+	$command = "$xrdcpbin $src->{turl} $dst->{turl} -OS\\\&authz=\"$src->{envelope}\" $verbose $silent $force $xrdcpoptions";
 
 	if (run_command($command)) {
 	    printf STDERR "error: ($PROGNAME) copy command failed\n";
@@ -811,7 +812,7 @@ if ($srcok && $dstok) {
     
     if ( ($src->{mode} eq "GRID") && ($dst->{mode} eq "GRID") ) {
 	$tmppath = "/tmp/.__env__" . rand() . rand();    
-	$command = "$xrdcpbin $src->{turl} $tmppath -OS\\\&authz=\"$src->{envelope}\" $verbose $silent $force";
+	$command = "$xrdcpbin $src->{turl} $tmppath -OS\\\&authz=\"$src->{envelope}\" $verbose $silent $force $xrdcpoptions";
 
 	if (run_command($command)) {
 	    printf STDERR "error: ($PROGNAME) copy command failed\n";
@@ -833,7 +834,7 @@ if ($srcok && $dstok) {
 	    }
 
 	    for (my $j=0; $j< $dst->{cnt}; $j++) { 
-		$command = "$xrdcpbin $tmppath $dst->{turl} -OD\\\&authz=\"$dst->{$j}->{envelope}\" $verbose $silent $force";
+		$command = "$xrdcpbin $tmppath $dst->{$j}->{turl} -OD\\\&authz=\"$dst->{$j}->{envelope}\" $verbose $silent $force $xrdcpoptions";
 
 		if (run_command($command)) {
 		    $seexclude .="$dst->{$j}->{se};";
