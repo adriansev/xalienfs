@@ -5,6 +5,8 @@ const char *XrdxAlienFsCVSID = "$Id: XrdxAlienFs.cc,v 2.0.0 2007/10/04 01:34:19 
 
 #include "XrdVersion.hh"
 #include "XrdSys/XrdSysDNS.hh"
+#include "XrdNet/XrdNetSocket.hh"
+#include "XrdNet/XrdNetOpts.hh"
 #include "XrdOuc/XrdOucEnv.hh"
 #include "XrdOuc/XrdOucTokenizer.hh"
 #include "XrdOuc/XrdOucTrace.hh"
@@ -218,7 +220,7 @@ int XrdxAlienFs::Callout(XrdOucErrInfo &error, char** outbyteresult, char *decod
   
   if (!XrdxAlienFS->AlienXI[myworker]) {
     XrdOucString  xi    = "xao"; xi+= myworker;
-    XrdxAlienFS->AlienXI[myworker]  = XrdSysSocket::Create(XrdxAlienFs::eDest, XrdxAlienFS->AlienOutputDir.c_str(), xi.c_str(), S_IRWXU, XrdSys_FIFO );
+    XrdxAlienFS->AlienXI[myworker]  = XrdNetSocket::Create(XrdxAlienFs::eDest, XrdxAlienFS->AlienOutputDir.c_str(), xi.c_str(), S_IRWXU, XRDNET_FIFO );
   }
   
  readagain:
