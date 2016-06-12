@@ -7,7 +7,7 @@ AM_INIT_AUTOMAKE([1.6.3 subdir-objects])
 
 AC_CONFIG_MACRO_DIR([m4])
 
-DEBUG="-g -ggdb"
+DEBUG="-g -pg -ggdb"
 OPTIM="-O2"
 
 #ERROR="-Werror"
