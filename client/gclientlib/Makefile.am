@@ -18,7 +18,6 @@ endif
 AM_CPPFLAGS = -I$(top_srcdir)/base -I$(top_srcdir)/server -I$(top_srcdir)/base/cwccrypt $(GAPIINC) $(ADD_SWIG) \
              $(GLOBUS_INCLUDE) $(OPENSSLINC) -I$(XROOTD_LOCATION)/include/xrootd/ -I$(XROOTD_LOCATION)/src/ -D_REENTRANT
 
-
 libgclient_la_SOURCES = gclient.cxx gclient.h gapi_dir_operations.h gapi_dir_operations.cxx \
 			gapi_stat.h gapi_stat.cxx gapi_file_operations.h gapi_file_operations.cxx \
 			gapi_job_operations.h gapi_job_operations.cxx \
@@ -38,22 +37,19 @@ perlmodule:
 	cd perl; ${PERL} Makefile.PL; make;
 
 perlmodule-install:
-	cd perl; make install;
+#	cd perl; make install;
+	mkdir -p $(DESTDIR)/$(libdir)/../perl/gapiserver
+	cp perl/gapi.pm  $(DESTDIR)/$(libdir)/../perl/gapiserver/
 
 
 perlmodule-uninstall:
 	cd perl; make uninstall;
 
 perlmodule-clean:
-	cd perl; rm -f libgapiUI_wrap.so
-	cd perl; rm -f gapiUI.pm
-	cd perl; rm -f gapiUI_wrap.cxx
-	cd perl; rm -f gapiUI_wrap.o
+	cd perl; rm -f libgapiUI_wrap.so gapiUI.pm gapiUI_wrap.cxx gapiUI_wrap.o
 
 install-exec-local:
 	mkdir -p $(DESTDIR)/$(libdir)/../perl/gapiserver
 	cp perl/gapi.pm  $(DESTDIR)/$(libdir)/../perl/gapiserver/
 endif
-
-
 
