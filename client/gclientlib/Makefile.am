@@ -11,7 +11,8 @@ libgapiUI_la_LIBADD = libgclient.la $(top_srcdir)/base/CODEC/libUI-CODEC.la \
 libgapiUI_la_LDFLAGS = -shrext ".so" -DWITH_OPENSSL -version-info 4:0:0
 
 if ENABLE_PERLMODULE
-         ADD_SWIG = -I$(SWIG_INC)/ -I$(SWIG_INC)/perl5/
+        SWIGDIR=`swig -swiglib`
+        ADD_SWIG = -I$(SWIGDIR)/ -I$(SWIGDIR)/perl5/
 endif
 
 AM_CPPFLAGS = -I$(top_srcdir)/base -I$(top_srcdir)/server -I$(top_srcdir)/base/cwccrypt $(GAPIINC) $(ADD_SWIG) \
