@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
   char *cmd=NULL;
   int argstart;
   int dumpresult=0;
-  char *order;
+  char *order = NULL;
 
   string bname = basename(argv[0]);
 
