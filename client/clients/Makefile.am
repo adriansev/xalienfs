@@ -2,13 +2,19 @@
 ## you have all needed files, that a GNU package needs
 AUTOMAKE_OPTIONS = foreign 1.4
 
+## IGTF distribution of certificates definitions; they will be used by client/clients/Makefile.am
+igtflocation = https://dist.eugridpma.info/distribution/igtf/current/
+igtfver = -1.74
+igtfname = igtf-policy-installation-bundle
+igtffile = $(igtfname)$(igtfver).tar.gz
+igtfurl = $(igtflocation)$(igtffile)
+################################################################################################
 
 bin_PROGRAMS = gshell gbbox gps gsubmit gcmd gisonline gprepare gstage gcp
 
 AM_CPPFLAGS = -I$(top_srcdir)/base -I$(top_srcdir)/client/gclientlib
 gshell_SOURCES = gshell.cxx
 gshell_LDADD = -L../gclientlib -lgapiUI
-
 
 gbbox_SOURCES = gbbox.cxx
 gbbox_LDADD = -L../gclientlib -lgapiUI
@@ -35,18 +41,19 @@ gstage_LDADD = -L../gclientlib -lgapiUI
 gcp_SOURCES = gcp.cxx
 gcp_LDADD = -L../gclientlib -lgapiUI
 
-EXTRA_DIST = scripts/$(GPREFIX)_apiservice-bootstrap \
-        scripts/env_gbbox.sh \
-        scripts/$(GPREFIX)_bash_completion.gShell \
-        scripts/$(GPREFIX)_cat \
-        scripts/$(GPREFIX)_run \
-        scripts/$(GPREFIX)_cd \
-        scripts/$(GPREFIX)_cp \
-        scripts/$(GPREFIX)_edit \
-        scripts/$(GPREFIX)_less \
-        scripts/$(GPREFIX)_more \
-        scripts/$(GPREFIX)_Shell\
+EXTRA_DIST = \
+	scripts/$(GPREFIX)_apiservice-bootstrap \
+	scripts/$(GPREFIX)_bash_completion.gShell \
+	scripts/$(GPREFIX)_cat \
+	scripts/$(GPREFIX)_run \
+	scripts/$(GPREFIX)_cd \
+	scripts/$(GPREFIX)_cp \
+	scripts/$(GPREFIX)_edit \
+	scripts/$(GPREFIX)_less \
+	scripts/$(GPREFIX)_more \
+	scripts/$(GPREFIX)_Shell\
 	scripts/$(GPREFIX)sh\
+	scripts/env_gbbox.sh \
 	scripts/gprefix_Shell\
 	scripts/gprefixsh \
 	scripts/gprefix_apiservice-bootstrap\
@@ -65,50 +72,50 @@ EXTRA_DIST = scripts/$(GPREFIX)_apiservice-bootstrap \
 	scripts/gprefix_rm.pl
 
 
-# these are the grid commands for which dynamic links to the gbbox will be
-# created
-GCOMMANDS = connect \
-            ls \
-	    mv \
-	    rm \
-            pwd \
-	    kill \
-            top \
-            df \
-	    whereis \
-            find \
-	    resubmit \
-	    mkdir \
-            rmdir \
-            purge \
-            erase \
-	    whoami \
-	    find \
-	    queue \
-	    spy \
-	    mirror \
-	    who \
-	    addTag\
-	    addTagValue\
-	    addTrigger\
-	    showTags\
-	    showTagValue\
-	    showAllTagValue\
-	    showTrigger\
-	    removeTag\
-	    removeTagValue\
-	    removeTrigger\
-	    updateTagValue\
-	    chgroup\
-	    guid2lfn\
-	    lfn2guid\
-	    partitions\
-	    services\
-	    registerOutput
-
+# these are the grid commands for which dynamic links to the gbbox will be created
+GCOMMANDS = \
+	connect \
+	ls \
+	mv \
+	rm \
+	pwd \
+	kill \
+	top \
+	df \
+	whereis \
+	find \
+	resubmit \
+	mkdir \
+	rmdir \
+	purge \
+	erase \
+	whoami \
+	find \
+	queue \
+	spy \
+	mirror \
+	who \
+	addTag\
+	addTagValue\
+	addTrigger\
+	showTags\
+	showTagValue\
+	showAllTagValue\
+	showTrigger\
+	removeTag\
+	removeTagValue\
+	removeTrigger\
+	updateTagValue\
+	chgroup\
+	guid2lfn\
+	lfn2guid\
+	partitions\
+	services\
+	registerOutput
 
 # these are the scripts to be installed into bin
-GSCRIPTBIN = _apiservice-bootstrap \
+GSCRIPTBIN = \
+	_apiservice-bootstrap \
 	_Shell \
 	_cat \
 	_run \
@@ -123,10 +130,8 @@ GSCRIPTBIN = _apiservice-bootstrap \
 	\-token-destroy
 
 
-
 # these are the scripts to be installed under etc
 GSCRIPTETC = _bash_completion.gShell
-
 
 ## TODO: the symbolic link mechanism is not really portable!
 install-exec-local:
@@ -145,26 +150,14 @@ install-exec-local:
 	cd $(DESTDIR)/$(bindir); ln -f -s gstage $(GPREFIX)_stage
 	cd $(DESTDIR)/$(bindir); ln -f -s gcmd $(GPREFIX)_cmd
 	cd $(DESTDIR)/$(bindir); ln -f -s gsubmit $(GPREFIX)_submit
-	$(INSTALL) -m 755 $(srcdir)/scripts/env_gbbox.sh $(DESTDIR)/$(prefix)/etc/;
-	pwd;
+	$(INSTALL) -m 755 $(srcdir)/scripts/env_gbbox.sh $(DESTDIR)/$(prefix)/etc/
+	pwd; cd $(srcdir);
+	$(eval cdir := $(shell pwd))
+	cd $(cdir) ; mkdir -p $(cdir)/share/certificates;
+	curl --create-dirs -fsSLk $(igtfurl) -o $(srcdir)/igtf-src/$(igtffile)
+	cd $(cdir)/igtf-src && tar --strip-components=1 -xvf $(igtffile) && ./configure --prefix=$(cdir)/share/certificates && make install-all-accredited
+	cd $(cdir) ; cp -aRv share $(DESTDIR)/$(prefix);
 
-#tmpdir="/tmp/igtf4alien.$$"
-#mkdir -p ${tmpdir}
-#cd ${tmpdir}
-#igtf_location="https://dist.eugridpma.info/distribution/igtf/current/"
-#igtf_file="igtf-policy-installation-bundle-1.74.tar.gz"
-
-#curl -fsSLkO ${igtf_location}/${igtf_file} && tar -xvf ${igtf_file}
-
-#cdir=$PWD
-#mkdir -p ${cdir}/igtf-install/
-#igtfdir=`find $PWD -type d -name 'igtf-policy-installation*'`
-
-#cd $igtfdir
-#./configure --prefix=${cdir}/igtf-install/
-#make install-all-accredited
-
-#cp -Rv ${cdir}/igtf-install/ $(DESTDIR)/$(prefix)/share/certificates/
 
 bundle-lib-local:
 	thisdir=$$PWD; mkdir lib; cp `ldd $$thisdir/../gclientlib/.libs/libgapiUI.so | grep -v "=> /lib" | awk '{print $$3}' ` lib; tar cvzf gshell-lib.tgz lib;rm -rf lib;
