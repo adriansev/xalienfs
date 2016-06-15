@@ -10,6 +10,15 @@ igtffile = $(igtfname)$(igtfver).tar.gz
 igtfurl = $(igtflocation)$(igtffile)
 ################################################################################################
 
+## AliEn CA
+aliencalocation = http://alien.cern.ch/cache/
+aliencaname = alien-ca
+aliencaver = -1.2
+aliencafile = $(aliencaname)$(aliencaver).tar.gz
+aliencaurl =  $(aliencalocation)$(aliencafile)
+
+################################################################################################
+
 bin_PROGRAMS = gshell gbbox gps gsubmit gcmd gisonline gprepare gstage gcp
 
 AM_CPPFLAGS = -I$(top_srcdir)/base -I$(top_srcdir)/client/gclientlib
@@ -156,8 +165,10 @@ install-exec-local:
 	cd $(cdir) ; mkdir -p $(cdir)/share/certificates;
 	curl --create-dirs -fsSLk $(igtfurl) -o $(srcdir)/igtf-src/$(igtffile)
 	cd $(cdir)/igtf-src && tar --strip-components=1 -xvf $(igtffile) && ./configure --prefix=$(cdir)/share/certificates && make install-all-accredited
+	cd $(cdir)
+	curl --create-dirs -fsSLk $(aliencaurl) -o $(srcdir)/alienca/$(aliencafile)
+	cd $(cdir)/alienca && tar --strip-components=1 -xvf $(aliencafile) && cp -aRv certificates/* $(cdir)/share/certificates/
 	cd $(cdir) ; cp -aRv share $(DESTDIR)/$(prefix);
-
 
 bundle-lib-local:
 	thisdir=$$PWD; mkdir lib; cp `ldd $$thisdir/../gclientlib/.libs/libgapiUI.so | grep -v "=> /lib" | awk '{print $$3}' ` lib; tar cvzf gshell-lib.tgz lib;rm -rf lib;
