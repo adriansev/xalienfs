@@ -3,11 +3,11 @@
 AUTOMAKE_OPTIONS = foreign 1.4
 
 ## IGTF distribution of certificates definitions; they will be used by client/clients/Makefile.am
-igtflocation = https://dist.eugridpma.info/distribution/igtf/current/
-igtfver = -1.74
+igtflocation = https://dist.igtf.net/distribution/igtf/current/
 igtfname = igtf-policy-installation-bundle
-igtffile = $(igtfname)$(igtfver).tar.gz
+igtffile = $(igtfname).tar.gz
 igtfurl = $(igtflocation)$(igtffile)
+
 ################################################################################################
 
 ## AliEn CA
