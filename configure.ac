@@ -12,7 +12,7 @@ OPTIM="-O2"
 
 #ERROR="-Werror"
 
-CXXFLAGS="-Wall -Wno-deprecated $ERROR $DEBUG $OPTIM $CXXFLAGS"
+CXXFLAGS="-Wall -Wno-deprecated -std=gnu++98 $ERROR $DEBUG $OPTIM $CXXFLAGS"
 
 case "$target_os" in
    tiger*)
