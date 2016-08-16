@@ -25,4 +25,4 @@ server/.libs/ server/XrdxAlienConfig.lo server/XrdxAlienConfig.o server/XrdxAlie
 server/xAlienWorker \
 client/clients/gapi-gcc-version client/clients/scripts/alien-token-destroy client/clients/scripts/alien-token-info client/clients/scripts/alien-token-init \
 client/clients/igtf-src client/clients/alienca client/clients/share \
-client/gclientlib/perl/gapiUI.pm
+client/gclientlib/perl/gapiUI.pm client/gclientlib/perl/gapiUI.bs INSTALL
