@@ -23,7 +23,7 @@ const char *XrdxAlienFsCVSID = "$Id: XrdxAlienFs.cc,v 2.0.0 2007/10/04 01:34:19 
 #include "XrdxAlienFs/XrdxAlienTrace.hh"
 #include "XrdxAlienFs/XrdxAlienTiming.hh"
 
-#include <uuid.h>
+#include <uuid/uuid.h>
 
 #ifdef AIX
 #include <sys/mode.h>
