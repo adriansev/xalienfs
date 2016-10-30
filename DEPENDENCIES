@@ -1,0 +1,10 @@
+BUILD DEPS :
+
+xrootd-server-devel
+uuid-devel
+libuuid-devel.x86_64
+
+
+
+
+
