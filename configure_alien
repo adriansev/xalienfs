@@ -1,10 +1,10 @@
 #!/bin/bash
 
-CDIR=`pwd`
-BUILD_DIR="${CDIR}/../00xalienfs-build"
+CDIR=$(pwd)
+BUILD_DIR="${CDIR}/../xalienfs-build"
+mkdir -p ${BUILD_DIR}
 
 ./cleanup
 ./bootstrap.sh
-mkdir -p ${BUILD_DIR}
 [[ -d ${BUILD_DIR} ]] && rm -rf ${BUILD_DIR}/*
 ./configure --prefix=${BUILD_DIR} --enable-perl-module --enable-build-server &> >( tee config_out.txt )
