@@ -4,7 +4,16 @@ CDIR=$(pwd)
 BUILD_DIR="${CDIR}/../xalienfs-build"
 mkdir -p ${BUILD_DIR}
 
+[[ ! $SWIG_ROOT ]] && SWIG_LIB=$(swig -swiglib)
+
 ./cleanup
 ./bootstrap.sh
 [[ -d ${BUILD_DIR} ]] && rm -rf ${BUILD_DIR}/*
-./configure --prefix=${BUILD_DIR} --enable-perl-module --enable-build-server &> >( tee config_out.txt )
+./configure --prefix=${BUILD_DIR} --with-xrootd-location=/usr     \
+                                  --with-perl=perl                \
+                                  --with-swig-inc="$SWIG_LIB"     \
+                                  --enable-perl-module            \
+                                  --enable-build-server           \
+                                  --with-readline  \
+                                  &> >( tee config_out.txt )
+
