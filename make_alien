@@ -1,0 +1,2 @@
+make &> >(tee make_alien_out.txt)
+make install
